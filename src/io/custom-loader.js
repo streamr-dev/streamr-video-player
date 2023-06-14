@@ -1,7 +1,7 @@
 import Log from '../utils/logger.js';
 import {BaseLoader, LoaderStatus, LoaderErrors} from './loader.js';
 import {RuntimeException} from '../utils/exception.js';
-import StreamrClient from 'streamr-client';
+import {StreamrClient} from 'streamr-client';
 // For MPEG-TS/FLV over WebSocket live stream
 class CustomLoader extends BaseLoader {
 
