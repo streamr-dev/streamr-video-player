@@ -1,6 +1,7 @@
 import Log from '../utils/logger.js';
 import {BaseLoader, LoaderStatus, LoaderErrors} from './loader.js';
 import {RuntimeException} from '../utils/exception.js';
+// @ts-ignore
 import {StreamrClient} from 'streamr-client';
 // For MPEG-TS/FLV over WebSocket live stream
 class CustomLoader extends BaseLoader {
@@ -18,6 +19,7 @@ class CustomLoader extends BaseLoader {
         //this._ws = null;
         this._requestAbort = false;
         this._receivedLength = 0;
+        this._client = null
     }
 
     destroy() {
@@ -27,17 +29,43 @@ class CustomLoader extends BaseLoader {
         super.destroy();
     }
 
+    base64ToArrayBuffer(base64) {
+        const binaryString = atob(base64);
+        const length = binaryString.length;
+        const bytes = new Uint8Array(length);
+      
+        for (let i = 0; i < length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+      
+        return bytes.buffer;
+      }
+
     open(dataSource) {
         try {
-            let streamrClient = new StreamrClient({
+            this._status = LoaderStatus.kConnecting;
+            let streamrClient = this._client = new StreamrClient({
                 auth: {
                   privateKey: "0x297882d5156658f9ba55d2269287c47d7c502557580fe1d2a55b82da25ee8272",
-                },
-                network: {
-                  webrtcMaxMessageSize: 65536, // 1000000// 1048576
-                  webrtcSendBufferMaxMessageCount: 1000,
-                },
+                }
             })
+            console.log(streamrClient)
+            const streamId = "0x14Ee183938ef7b3b071072CfCAb16D2a0D37B39D/transfer"
+            console.log(streamrClient)
+            streamrClient.subscribe(streamId, (message) => {
+                //console.log(message)
+                let arrBuf = this.base64ToArrayBuffer(message['b'][1])
+                //console.log(arrBuf)
+                this._dispatchArrayBuffer(arrBuf)
+                // read msg as arraybuffer
+                // message[b[1]] convert base64 to arraybuffer
+                // pass arraybuffer to 
+            })
+            /*streamrClient.subscribe({ 
+                id: "0x14Ee183938ef7b3b071072CfCAb16D2a0D37B39D/uniclip",
+            }, msg => {
+                console.log(msg)
+            })*/
             /*let streamrClient = this._streamrClient = new StreamrClient({
                 auth: {
                   privateKey: "0x297882d5156658f9ba55d2269287c47d7c502557580fe1d2a55b82da25ee8272",
@@ -61,6 +89,7 @@ class CustomLoader extends BaseLoader {
             // pass arraybuffer to dispatch arraybuffer
         } catch(e) {
             console.log(e)
+            this._status = LoaderStatus.kError;
         }
         /*try {
             let ws = this._ws = new self.WebSocket(dataSource.url);
@@ -85,12 +114,13 @@ class CustomLoader extends BaseLoader {
     }
 
     abort() {
+        this._client = null
         /*let ws = this._ws;
         if (ws && (ws.readyState === 0 || ws.readyState === 1)) {  // CONNECTING || OPEN
             this._requestAbort = true;
             ws.close();
         }
-
+        
         this._ws = null;
         this._status = LoaderStatus.kComplete;*/
     }
@@ -131,7 +161,7 @@ class CustomLoader extends BaseLoader {
                 throw new RuntimeException(info.msg);
             }
         }
-    }
+    }*/
 
     _dispatchArrayBuffer(arraybuffer) {
         let chunk = arraybuffer;
@@ -142,7 +172,7 @@ class CustomLoader extends BaseLoader {
             this._onDataArrival(chunk, byteStart, this._receivedLength);
         }
     }
-
+    /*
     _onWebSocketError(e) {
         this._status = LoaderStatus.kError;
 

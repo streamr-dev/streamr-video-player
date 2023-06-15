@@ -12,7 +12,7 @@ module.exports = {
         libraryTarget: 'umd'
     },
 
-    devtool: 'source-map',
+    devtool: 'eval-source-map',
 
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json']

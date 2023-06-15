@@ -3,12 +3,12 @@
         "outDir": "./dist/",
         "allowJs": true,
         "sourceMap": true,
-        "module": "CommonJS",
-        "target": "es5",
+        "module": "es6",
+        "target": "es2017",
         "experimentalDecorators": true,
         "declaration": true,
         "declarationDir": "./d.ts/",
-        "lib": ["dom", "es5", "es2015.promise", "es2015.collection"],
+        "lib": ["dom", "es5", "es2015.promise", "es2015.collection", "es2017"],
         "typeRoots": ["./node_modules/@types"]
     },
     "include": [

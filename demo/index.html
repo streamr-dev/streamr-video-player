@@ -5,6 +5,7 @@
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <title>mpegts.js demo</title>
     <link rel="stylesheet" type="text/css" href="demo.css" />
+    <script src="../dist/mpegts.js"></script>
 </head>
 
 <body>
@@ -52,7 +53,7 @@
         <textarea name="logcatbox" class="logcatBox" rows="10" readonly></textarea>
     </div>
 
-    <script src="../dist/mpegts.js"></script>
+    
     
     <script>
         var checkBoxFields = ['isLive', 'withCredentials', 'liveBufferLatencyChasing'];
@@ -227,7 +228,7 @@
             streamURL = document.getElementById('streamURL');
             mediaSourceURL = document.getElementById('mediaSourceURL');
             loadSettings();
-            showVersion();
+            //showVersion();
             player_load();
         });
     </script>
