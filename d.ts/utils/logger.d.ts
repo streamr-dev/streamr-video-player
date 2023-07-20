@@ -15,5 +15,4 @@ declare namespace Log {
     const ENABLE_DEBUG: boolean;
     const ENABLE_VERBOSE: boolean;
     const ENABLE_CALLBACK: boolean;
-    const emitter: any;
 }

@@ -2,7 +2,7 @@ export default Transmuxer;
 declare class Transmuxer {
     constructor(mediaDataSource: any, config: any);
     TAG: string;
-    _emitter: any;
+    _emitter: EventEmitter;
     _worker: any;
     _workerDestroying: boolean;
     e: {
@@ -37,4 +37,5 @@ declare class Transmuxer {
     _onLoggingConfigChanged(config: any): void;
     _onWorkerMessage(e: any): void;
 }
+import { EventEmitter } from 'events';
 import TransmuxingController from './transmuxing-controller.js';

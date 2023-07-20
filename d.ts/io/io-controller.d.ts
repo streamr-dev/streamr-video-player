@@ -25,6 +25,7 @@ declare class IOController {
     _seekHandler: any;
     _dataSource: any;
     _isWebSocketURL: boolean;
+    _isStreamId: boolean;
     _refTotalLength: any;
     _totalLength: any;
     _fullRequestFlag: boolean;

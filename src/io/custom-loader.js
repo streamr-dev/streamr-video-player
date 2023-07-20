@@ -44,13 +44,14 @@ class CustomLoader extends BaseLoader {
     open(dataSource) {
         try {
             this._status = LoaderStatus.kConnecting;
-            let streamrClient = this._client = new StreamrClient({
+            console.log('Attempting to subscribe to ', dataSource.url)
+            let streamrClient = window.streamrClient = this._client = new StreamrClient({
                 auth: {
                   privateKey: "0x297882d5156658f9ba55d2269287c47d7c502557580fe1d2a55b82da25ee8272",
                 }
             })
             console.log(streamrClient)
-            const streamId = "0x14Ee183938ef7b3b071072CfCAb16D2a0D37B39D/transfer"
+            const streamId = dataSource.url
             console.log(streamrClient)
             streamrClient.subscribe(streamId, (message) => {
                 //console.log(message)
@@ -61,56 +62,11 @@ class CustomLoader extends BaseLoader {
                 // message[b[1]] convert base64 to arraybuffer
                 // pass arraybuffer to 
             })
-            /*streamrClient.subscribe({ 
-                id: "0x14Ee183938ef7b3b071072CfCAb16D2a0D37B39D/uniclip",
-            }, msg => {
-                console.log(msg)
-            })*/
-            /*let streamrClient = this._streamrClient = new StreamrClient({
-                auth: {
-                  privateKey: "0x297882d5156658f9ba55d2269287c47d7c502557580fe1d2a55b82da25ee8272",
-                },
-                network: {
-                  webrtcMaxMessageSize: 65536, // 1000000// 1048576
-                  webrtcSendBufferMaxMessageCount: 1000,
-                },
-            })
-            this._status = LoaderStatus.kConnecting;
             
-            streamrClient.subscribe({ 
-                id: "0x14Ee183938ef7b3b071072CfCAb16D2a0D37B39D/uniclip",
-            }, msg => {
-                console.log(msg)
-            })*/
-            // start streamr client
-            // subscribe to a stream
-            // bind events or put the logic here for now
-            // retrieve msg and convert it from base64 to arraybuffer
-            // pass arraybuffer to dispatch arraybuffer
         } catch(e) {
             console.log(e)
             this._status = LoaderStatus.kError;
         }
-        /*try {
-            let ws = this._ws = new self.WebSocket(dataSource.url);
-            ws.binaryType = 'arraybuffer';
-            ws.onopen = this._onWebSocketOpen.bind(this);
-            ws.onclose = this._onWebSocketClose.bind(this);
-            ws.onmessage = this._onWebSocketMessage.bind(this);
-            ws.onerror = this._onWebSocketError.bind(this);
-
-            this._status = LoaderStatus.kConnecting;
-        } catch (e) {
-            this._status = LoaderStatus.kError;
-
-            let info = {code: e.code, msg: e.message};
-
-            if (this._onError) {
-                this._onError(LoaderErrors.EXCEPTION, info);
-            } else {
-                throw new RuntimeException(info.msg);
-            }
-        }*/
     }
 
     abort() {

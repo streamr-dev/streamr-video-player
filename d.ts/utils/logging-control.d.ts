@@ -33,6 +33,3 @@ declare class LoggingControl {
     static addLogListener(listener: any): void;
     static removeLogListener(listener: any): void;
 }
-declare namespace LoggingControl {
-    const emitter: any;
-}

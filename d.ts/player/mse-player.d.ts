@@ -3,7 +3,7 @@ declare class MSEPlayer {
     constructor(mediaDataSource: any, config: any);
     TAG: string;
     _type: string;
-    _emitter: any;
+    _emitter: EventEmitter;
     _config: {
         enableWorker: boolean;
         enableStashBuffer: boolean;
@@ -90,5 +90,6 @@ declare class MSEPlayer {
     _onvStalled(e: any): void;
     _onvProgress(e: any): void;
 }
+import { EventEmitter } from 'events';
 import MSEController from '../core/mse-controller.js';
 import Transmuxer from '../core/transmuxer.js';

@@ -42,7 +42,7 @@
     "socket.io-parser": ">=3.3.3",
     "source-map-loader": "latest",
     "ssri": ">=8.0.1",
-    "streamr-client": "^8.0.0",
+    "streamr-client": "8.5.5-nolit.1",
     "terser-webpack-plugin": "^1.2.3",
     "ts-loader": "latest",
     "ts-toolbelt": "latest",

@@ -70,6 +70,7 @@ class IOController {
         this._seekHandler = null;
 
         this._dataSource = dataSource;
+        this._isStreamId = /^0x([A-Fa-f0-9]{40})\//.test(dataSource.url);
         this._isWebSocketURL = /wss?:\/\/(.+?)/.test(dataSource.url);
         this._refTotalLength = dataSource.filesize ? dataSource.filesize : null;
         this._totalLength = this._refTotalLength;
@@ -244,9 +245,12 @@ class IOController {
         if (this._config.customLoader != null) {
             //this._loaderClass = StreamrLoader
             this._loaderClass = this._config.customLoader;
-        } else if (this._isWebSocketURL) {
+        } else if (this._isStreamId) {
             this._loaderClass = CustomLoader;
-            //this._loaderClass = WebSocketLoader;
+        }
+        else if (this._isWebSocketURL) {
+            //this._loaderClass = CustomLoader;
+            this._loaderClass = WebSocketLoader;
             //this._loaderClass = StreamrLoader;
         } else if (FetchStreamLoader.isSupported()) {
             this._loaderClass = FetchStreamLoader;
