@@ -384,7 +384,7 @@ class MSEPlayer {
             statInfo.decodedFrames = decoded;
             statInfo.droppedFrames = dropped;
         }
-
+        //console.log(statInfo)
         return statInfo;
     }
 
@@ -587,6 +587,7 @@ class MSEPlayer {
     }
 
     _onvSeeking(e) {  // handle seeking request from browser's progress bar
+        console.log('seeking called')
         let target = this._mediaElement.currentTime;
         let buffered = this._mediaElement.buffered;
 

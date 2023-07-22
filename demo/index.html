@@ -3,7 +3,7 @@
 
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <title>mpegts.js demo</title>
+    <title>Streamr video PoC</title>
     <link rel="stylesheet" type="text/css" href="demo.css" />
     <script src="../dist/mpegts.js"></script>
 </head>
@@ -47,6 +47,28 @@
 
         function player_load_mds(mediaDataSource) {
             var element = document.getElementsByName('videoElement')[0];
+            var supposedCurrentTime = 0;
+            element.addEventListener('timeupdate', function() {
+            if (!element.seeking) {
+                    supposedCurrentTime = element.currentTime;
+            }
+            });
+            // prevent user from seeking
+            element.addEventListener('seeking', function() {
+            // guard agains infinite recursion:
+            // user seeks, seeking is fired, currentTime is modified, seeking is fired, current time is modified, ....
+            var delta = element.currentTime - supposedCurrentTime;
+            if (Math.abs(delta) > 0.01) {
+                console.log("Seeking is disabled");
+                element.currentTime = supposedCurrentTime;
+            }
+            });
+            // delete the following event handler if rewind is not required
+            element.addEventListener('ended', function() {
+            // reset state in order to allow for rewind
+                supposedCurrentTime = 0;
+            });
+
             if (typeof player !== "undefined") {
                 if (player != null) {
                     player.unload();
@@ -64,7 +86,6 @@
                 //liveBufferLatencyMinRemain: 2,
                 //liveBufferLatencyMaxLatency: 10,
                 autoCleanupSourceBuffer: true,
-                seekType: 'range',
                 liveBufferLatencyChasing: false, //document.getElementById('liveBufferLatencyChasing').checked,
             });
             player.attachMediaElement(element);
