@@ -52,8 +52,9 @@ class CustomLoader extends BaseLoader {
             })
             console.log(streamrClient)
             const streamId = dataSource.url
+            console.log('streamId is: ', streamId)
             console.log(streamrClient)
-            streamrClient.subscribe(streamId, (message) => {
+            streamrClient.subscribe('0x14Ee183938ef7b3b071072CfCAb16D2a0D37B39D/transfer', (message) => {
                 //console.log(message)
                 let arrBuf = this.base64ToArrayBuffer(message['b'][1])
                 //console.log(arrBuf)

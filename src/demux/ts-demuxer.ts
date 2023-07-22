@@ -242,7 +242,9 @@ class TSDemuxer extends BaseDemuxer {
             throw new IllegalStateException('onError & onMediaInfo & onTrackMetadata & onDataAvailable callback must be specified');
         }
 
-        let offset = 0;
+        let recheckOffset = TSDemuxer.probe(chunk)
+
+        let offset = recheckOffset.sync_offset
 
         if (this.first_parse_) {
             this.first_parse_ = false;
