@@ -23,9 +23,6 @@ class CustomLoader extends BaseLoader {
     }
 
     destroy() {
-        /*if (this._ws) {
-            this.abort();
-        }*/
         super.destroy();
     }
 
@@ -44,24 +41,16 @@ class CustomLoader extends BaseLoader {
     open(dataSource) {
         try {
             this._status = LoaderStatus.kConnecting;
-            console.log('Attempting to subscribe to ', dataSource.url)
             let streamrClient = window.streamrClient = this._client = new StreamrClient({
                 auth: {
                   privateKey: "0x297882d5156658f9ba55d2269287c47d7c502557580fe1d2a55b82da25ee8272",
                 }
             })
-            console.log(streamrClient)
             const streamId = dataSource.url
             console.log('streamId is: ', streamId)
-            console.log(streamrClient)
-            streamrClient.subscribe('0x14Ee183938ef7b3b071072CfCAb16D2a0D37B39D/transfer', (message) => {
-                //console.log(message)
+            streamrClient.subscribe('0x82a31ab84fd2159b54f887d4d8e46a0a1f3a7ffc/mapmetrics', (message) => {
                 let arrBuf = this.base64ToArrayBuffer(message['b'][1])
-                //console.log(arrBuf)
                 this._dispatchArrayBuffer(arrBuf)
-                // read msg as arraybuffer
-                // message[b[1]] convert base64 to arraybuffer
-                // pass arraybuffer to 
             })
             
         } catch(e) {
@@ -72,53 +61,7 @@ class CustomLoader extends BaseLoader {
 
     abort() {
         this._client = null
-        /*let ws = this._ws;
-        if (ws && (ws.readyState === 0 || ws.readyState === 1)) {  // CONNECTING || OPEN
-            this._requestAbort = true;
-            ws.close();
-        }
-        
-        this._ws = null;
-        this._status = LoaderStatus.kComplete;*/
     }
-
-    /*_onWebSocketOpen(e) {
-        this._status = LoaderStatus.kBuffering;
-    }
-
-    _onWebSocketClose(e) {
-        if (this._requestAbort === true) {
-            this._requestAbort = false;
-            return;
-        }
-
-        this._status = LoaderStatus.kComplete;
-
-        if (this._onComplete) {
-            this._onComplete(0, this._receivedLength - 1);
-        }
-    }
-
-    _onWebSocketMessage(e) {
-        if (e.data instanceof ArrayBuffer) {
-            this._dispatchArrayBuffer(e.data);
-        } else if (e.data instanceof Blob) {
-            let reader = new FileReader();
-            reader.onload = () => {
-                this._dispatchArrayBuffer(reader.result);
-            };
-            reader.readAsArrayBuffer(e.data);
-        } else {
-            this._status = LoaderStatus.kError;
-            let info = {code: -1, msg: 'Unsupported WebSocket message type: ' + e.data.constructor.name};
-
-            if (this._onError) {
-                this._onError(LoaderErrors.EXCEPTION, info);
-            } else {
-                throw new RuntimeException(info.msg);
-            }
-        }
-    }*/
 
     _dispatchArrayBuffer(arraybuffer) {
         let chunk = arraybuffer;
@@ -129,22 +72,6 @@ class CustomLoader extends BaseLoader {
             this._onDataArrival(chunk, byteStart, this._receivedLength);
         }
     }
-    /*
-    _onWebSocketError(e) {
-        this._status = LoaderStatus.kError;
-
-        let info = {
-            code: e.code,
-            msg: e.message
-        };
-
-        if (this._onError) {
-            this._onError(LoaderErrors.EXCEPTION, info);
-        } else {
-            throw new RuntimeException(info.msg);
-        }
-    }*/
-
 }
 
 export default CustomLoader;
