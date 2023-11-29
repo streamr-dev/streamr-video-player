@@ -49,7 +49,7 @@
     "webpack-dev-server": "^4.9.3",
     "ws": ">=7.4.6",
     "xmlhttprequest-ssl": ">=1.6.2",
-    "streamr-client": "100.0.0-pretestnet.6"
+    "streamr-client": "100.0.0-testnet-one.0"
   },
   "author": "zheng qian <xqq@xqq.im>",
   "license": "Apache-2.0"
