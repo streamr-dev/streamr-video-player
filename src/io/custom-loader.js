@@ -94,12 +94,30 @@ class CustomLoader extends BaseLoader {
                     theGraphUrl: "https://api.thegraph.com/subgraphs/name/samt1803/network-subgraphs"
                 }
             })
-            const streamId = dataSource.url
-            console.log('streamId is: ', streamId)
-            streamrClient.subscribe('0x1518ae8bec297262abe1b81042a57f1d62add875/video-stream', (message) => {
+            //const streamId = dataSource.url
+            //console.log('streamId is: ', streamId)
+            let msgCounter = 0
+            // Get the current URL
+            const currentUrl = new URL(window.location.href)
+
+            // Create a URLSearchParams object from the URL
+            // const urlSearchParams = new URLSearchParams(currentUrl)
+
+            // Get the values of streamId and partitionId
+            const streamId = currentUrl.searchParams.get('stream') == null ? '0x1518ae8bec297262abe1b81042a57f1d62add875/video-stream' : currentUrl.searchParams.get('stream')
+            const partitionId = currentUrl.searchParams.get('partition') == null ? 0 : parseInt(currentUrl.searchParams.get('partition'))
+            console.log('stream Id: ', streamId)
+            console.log('partition Id: ', partitionId)
+            //try to get uri parameters streamId & partition if given
+            streamrClient.subscribe({id: streamId, partition: partitionId}, (message) => {
                 //console.log(message)
-                let arrBuf = this.base64ToArrayBuffer(message['b'][1])
-                this._dispatchArrayBuffer(arrBuf)
+                // retrieve array of base64 encoded content from message
+                // loop through array, decode base64, dispatch each package to arraybuffer
+                message['b'][1]?.forEach((element) => {
+                    let arrBuf = this.base64ToArrayBuffer(element)
+                    this._dispatchArrayBuffer(arrBuf)
+                    msgCounter = msgCounter + 1;
+                })  
             })
             
         } catch(e) {
