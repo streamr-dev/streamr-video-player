@@ -57,7 +57,7 @@ class CustomLoader extends BaseLoader {
             // const urlSearchParams = new URLSearchParams(currentUrl)
 
             // Get the values of streamId and partitionId
-            const streamId = currentUrl.searchParams.get('stream') == null ? '0x1518ae8bec297262abe1b81042a57f1d62add875/video-stream' : currentUrl.searchParams.get('stream')
+            const streamId = currentUrl.searchParams.get('stream') == null ? '0x5f8e71b79df31565e23a603a981fc78ddbab9d71/countdown' : currentUrl.searchParams.get('stream')
             const partitionId = currentUrl.searchParams.get('partition') == null ? 0 : parseInt(currentUrl.searchParams.get('partition'))
             console.log('stream Id: ', streamId)
             console.log('partition Id: ', partitionId)
