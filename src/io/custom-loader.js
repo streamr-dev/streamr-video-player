@@ -46,6 +46,22 @@ class CustomLoader extends BaseLoader {
                 auth: {
                   privateKey: "0x297882d5156658f9ba55d2269287c47d7c502557580fe1d2a55b82da25ee8272",
                 },
+                contracts: {
+                    streamRegistryChainRPCs: {
+                      rpcs: [{
+                        url: "https://polygon-rpc.com",
+                        timeout: 120000
+                       }, {
+                        url: "https://poly-rpc.gateway.pokt.network/",
+                        timeout: 120000
+                       },
+                       {
+                        url: "https://polygon-bor.publicnode.com",
+                        timeout: 120000
+                       }],
+                       chainId: 137
+                    }
+                  },
             })
             //const streamId = dataSource.url
             //console.log('streamId is: ', streamId)
@@ -57,7 +73,7 @@ class CustomLoader extends BaseLoader {
             // const urlSearchParams = new URLSearchParams(currentUrl)
 
             // Get the values of streamId and partitionId
-            const streamId = currentUrl.searchParams.get('stream') == null ? '0x5f8e71b79df31565e23a603a981fc78ddbab9d71/countdown' : currentUrl.searchParams.get('stream')
+            const streamId = currentUrl.searchParams.get('stream') == null ? '0x5f8e71b79df31565e23a603a981fc78ddbab9d71/brubeck-video-stream' : currentUrl.searchParams.get('stream')
             const partitionId = currentUrl.searchParams.get('partition') == null ? 0 : parseInt(currentUrl.searchParams.get('partition'))
             console.log('stream Id: ', streamId)
             console.log('partition Id: ', partitionId)
